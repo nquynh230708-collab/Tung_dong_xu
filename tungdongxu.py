@@ -135,27 +135,7 @@ with col_right:
                 st.success(f"**💡 Kết luận:** Khi số lần thực nghiệm lớn ({trials} lần), xác suất thực nghiệm (**{exp_prob:.2%}**) xấp xỉ bằng xác suất lí thuyết (**{theo_prob:.2%}**).")
             else:
                 st.warning("**💡 Gợi ý:** Hãy thử tăng số lần thực nghiệm lên trên 1000 để thấy xác suất thực nghiệm gần bằng xác suất lí thuyết hơn!")
-with col_right:
-    st.subheader("📊 Phân tích xác suất")
-    
-    show_sample_space = st.checkbox("Hiện không gian mẫu (Ω)")
-    show_prob = st.checkbox("Hiện xác suất biến cố")
-    
-    if show_sample_space:
-        import itertools
-        space = list(itertools.product(['S', 'N'], repeat=num_coins))
-        space_str = " ; ".join(["".join(item) for item in space])
-        st.info(f"**Không gian mẫu ({len(space)} kết quả):**\n\n{space_str}")
-    
-    if st.session_state.coin_history:
-        # Tính toán xác suất thực nghiệm
-        logic_func = event_options[selected_event]
-        success_count = sum(1 for res in st.session_state.coin_history if logic_func(res))
-        exp_prob = success_count / len(st.session_state.coin_history)
-        
-        if show_prob:
-            st.success(f"**Biến cố đang xét:** {selected_event}")
-            st.metric("Số lần xảy ra", f"{success_count} / {len(st.session_state.coin_history)}")
+
             
             # Tính phần trăm cho progress bar
             st.write(f"**Xác suất thực nghiệm: {exp_prob:.2%}**")
@@ -172,3 +152,4 @@ st.markdown(f"""
     </div>
 
     """, unsafe_allow_html=True)
+
