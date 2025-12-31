@@ -1,3 +1,4 @@
+import numpy as np
 import streamlit as st
 import random
 import pandas as pd
@@ -152,4 +153,5 @@ st.markdown(f"""
     </div>
 
     """, unsafe_allow_html=True)
+
 
