@@ -93,6 +93,48 @@ with col_center:
         st.dataframe(df, height=300, use_container_width=True)
 
 # --- PHẦN MÀN HÌNH PHẢI ---
+
+with col_right:
+    st.subheader("📊 Phân tích xác suất")
+    
+    show_sample_space = st.checkbox("Hiện không gian mẫu (Ω)")
+    show_prob = st.checkbox("Hiện xác suất & Kết luận")
+    
+    # Giả định link ảnh của Quỳnh trên GitHub (Thay link bằng link thật của bạn)
+    url_s = "https://raw.githubusercontent.com/username/repo/main/dx sap.png"
+    url_n = "https://raw.githubusercontent.com/username/repo/main/dx ngua.png"
+
+    if show_sample_space:
+        import itertools
+        space = list(itertools.product(['S', 'N'], repeat=num_coins))
+        space_str = " ; ".join(["".join(item) for item in space])
+        st.info(f"**Không gian mẫu ({len(space)} kết quả):**\n\n{space_str}")
+    
+    if st.session_state.coin_history:
+        logic_func = event_options[selected_event]
+        success_count = sum(1 for res in st.session_state.coin_history if logic_func(res))
+        exp_prob = success_count / len(st.session_state.coin_history)
+        
+        # Xác suất lí thuyết (tính toán dựa trên không gian mẫu)
+        import itertools
+        space = list(itertools.product(['S', 'N'], repeat=num_coins))
+        theoretical_count = sum(1 for res in space if logic_func(res))
+        theo_prob = theoretical_count / len(space)
+        
+        if show_prob:
+            st.write(f"**Biến cố:** {selected_event}")
+            
+            # So sánh bằng Metric
+            c1, c2 = st.columns(2)
+            c1.metric("Xác suất Thực nghiệm", f"{exp_prob:.2%}")
+            c2.metric("Xác suất Lí thuyết", f"{theo_prob:.2%}")
+            
+            # CÂU KẾT LUẬN QUAN TRỌNG
+            st.markdown("---")
+            if trials > 1000:
+                st.success(f"**💡 Kết luận:** Khi số lần thực nghiệm lớn ({trials} lần), xác suất thực nghiệm (**{exp_prob:.2%}**) xấp xỉ bằng xác suất lí thuyết (**{theo_prob:.2%}**).")
+            else:
+                st.warning("**💡 Gợi ý:** Hãy thử tăng số lần thực nghiệm lên trên 1000 để thấy xác suất thực nghiệm gần bằng xác suất lí thuyết hơn!")
 with col_right:
     st.subheader("📊 Phân tích xác suất")
     
@@ -128,4 +170,5 @@ st.markdown(f"""
         Giáo viên: Trịnh Thị Như Quỳnh<br>
         Trường THCS Trần Hưng Đạo
     </div>
+
     """, unsafe_allow_html=True)
